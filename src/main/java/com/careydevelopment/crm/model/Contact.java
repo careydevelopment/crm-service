@@ -8,6 +8,7 @@ public class Contact {
     private String firstName;
     private String lastName;
     private Account account;
+    
     public String getId() {
         return id;
     }
