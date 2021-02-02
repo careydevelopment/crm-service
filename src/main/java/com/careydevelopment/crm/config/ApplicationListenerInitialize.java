@@ -38,15 +38,7 @@ public class ApplicationListenerInitialize implements ApplicationListener<Applic
     private ContactService contactService;
     
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        String bearerToken = "Bearer eyJhbGciOiJ...";
-        String contactId = "6014199147692f4194ff9d";
-        
-        try {
-            Contact contact = contactService.fetchContact(bearerToken, contactId);
-            System.err.println(contact);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
         
 
