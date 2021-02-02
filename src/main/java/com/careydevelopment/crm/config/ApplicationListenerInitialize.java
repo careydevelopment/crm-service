@@ -1,30 +1,17 @@
 package com.careydevelopment.crm.config;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import com.careydevelopment.crm.model.Account;
-import com.careydevelopment.crm.model.Activity;
-import com.careydevelopment.crm.model.ActivityOutcome;
-import com.careydevelopment.crm.model.ActivityType;
-import com.careydevelopment.crm.model.ActivityTypeLightweight;
 import com.careydevelopment.crm.model.Contact;
-import com.careydevelopment.crm.model.DealStage;
 import com.careydevelopment.crm.repository.ActivityOutcomeRepository;
 import com.careydevelopment.crm.repository.ActivityRepository;
 import com.careydevelopment.crm.repository.ActivityTypeRepository;
 import com.careydevelopment.crm.repository.DealRepository;
 import com.careydevelopment.crm.repository.DealStageRepository;
+import com.careydevelopment.crm.service.ContactService;
 
 @Component
 public class ApplicationListenerInitialize implements ApplicationListener<ApplicationReadyEvent>  {
@@ -47,46 +34,20 @@ public class ApplicationListenerInitialize implements ApplicationListener<Applic
     @Autowired
     private ActivityRepository activityRepo;
     
+    @Autowired
+    private ContactService contactService;
     
     public void onApplicationEvent(ApplicationReadyEvent event) {
+        String bearerToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaWx0b24iLCJhdWQiOiJjYXJleWRldmVsb3BtZW50LWVjb3N5c3RlbS11c2VycyIsImlkIjoiNjAxNDA4MWUyMjFlMWI1MzRhOGFhNDMyIiwiZXhwIjoxNjEyMzEwMTI3LCJpYXQiOjE2MTIyMjM3MjcsImF1dGhvcml0aWVzIjpbIkNBUkVZREVWRUxPUE1FTlRfQ1JNX1VTRVIiXX0.BCxBBPo4yN8zb_acgjJ8FMU-5X8VzRbIQiomkr2uIf48j8uRARHxWom40QGaKGCs2CzH72qMS92mxUdHvByACQ";
+        String contactId = "6014199147692f4194ff9d";
+        
         try {
+            Contact contact = contactService.fetchContact(bearerToken, contactId);
+            System.err.println(contact);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
         
-    
-    private DealStage dealStage(List<DealStage> stages, Integer index) {
-        DealStage stage = null;
-        
-        Optional<DealStage> stageOpt = stages.stream().filter(st -> st.getIndex().equals(index)).findFirst();
-        if (stageOpt.isPresent()) stage = stageOpt.get();
-        
-        return stage;
-    }
-    
-    
-    private ActivityOutcome outcome(List<ActivityOutcome> outcomes, String name) {
-        ActivityOutcome outcome = null;
-        
-        Optional<ActivityOutcome> outcomeOpt = outcomes.stream().filter(oc -> oc.getName().equals(name)).findFirst();
-        if (outcomeOpt.isPresent()) outcome = outcomeOpt.get();
-        
-        return outcome;
-    }
-    
-    
-    private ActivityTypeLightweight type(List<ActivityType> types, String name) {
-        ActivityTypeLightweight type = null;
-        
-        Optional<ActivityType> typeOpt = types.stream().filter(oc -> oc.getName().equals(name)).findFirst();
-        if (typeOpt.isPresent()) {
-            ActivityType tt = typeOpt.get();
-            type = new ActivityTypeLightweight();
-            type.setId(tt.getId());
-            type.setName(tt.getName());
-        }
-        
-        return type;
-    }
+
 }
