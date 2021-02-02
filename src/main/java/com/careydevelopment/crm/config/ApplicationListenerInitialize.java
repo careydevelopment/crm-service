@@ -38,7 +38,7 @@ public class ApplicationListenerInitialize implements ApplicationListener<Applic
     private ContactService contactService;
     
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        String bearerToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaWx0b24iLCJhdWQiOiJjYXJleWRldmVsb3BtZW50LWVjb3N5c3RlbS11c2VycyIsImlkIjoiNjAxNDA4MWUyMjFlMWI1MzRhOGFhNDMyIiwiZXhwIjoxNjEyMzEwMTI3LCJpYXQiOjE2MTIyMjM3MjcsImF1dGhvcml0aWVzIjpbIkNBUkVZREVWRUxPUE1FTlRfQ1JNX1VTRVIiXX0.BCxBBPo4yN8zb_acgjJ8FMU-5X8VzRbIQiomkr2uIf48j8uRARHxWom40QGaKGCs2CzH72qMS92mxUdHvByACQ";
+        String bearerToken = "Bearer eyJhbGciOiJ...";
         String contactId = "6014199147692f4194ff9d";
         
         try {
