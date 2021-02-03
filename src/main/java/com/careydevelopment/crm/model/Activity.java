@@ -29,8 +29,11 @@ public class Activity {
     @Size(max = 50, message = "Activity location must not exceed 50 characters")
     private String location;
     
-    @NotNull(message = "Please include an activity date")
-    private Long date;
+    @NotNull(message = "Please include an activity start date")
+    private Long startDate;
+
+    @NotNull(message = "Please include an activity end date")
+    private Long endDate;
     
     @NotNull(message = "Please associate a contact with this activity")
     private Contact contact;
@@ -83,14 +86,6 @@ public class Activity {
         this.location = location;
     }
 
-    public Long getDate() {
-        return date;
-    }
-
-    public void setDate(Long date) {
-        this.date = date;
-    }
-
     public Contact getContact() {
         return contact;
     }
@@ -99,6 +94,22 @@ public class Activity {
         this.contact = contact;
     }
     
+    public Long getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Long startDate) {
+        this.startDate = startDate;
+    }
+
+    public Long getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Long endDate) {
+        this.endDate = endDate;
+    }
+
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
     }

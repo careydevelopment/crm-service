@@ -7,7 +7,7 @@ public class SearchCriteria {
 
     private String contactId;
     private Long minDate;
-    private String orderBy = "date";
+    private String orderBy = "startDate";
     private Direction orderType = Direction.DESC;
     
     

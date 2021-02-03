@@ -25,6 +25,7 @@ public class ActivityService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    
     public List<Activity> search(SearchCriteria searchCriteria) {
         List<AggregationOperation> ops = new ArrayList<>();
         
@@ -34,7 +35,7 @@ public class ActivityService {
         }
         
         if (searchCriteria.getMinDate() != null) {
-            AggregationOperation dateThreshold = Aggregation.match(Criteria.where("date").gt(searchCriteria.getMinDate()));
+            AggregationOperation dateThreshold = Aggregation.match(Criteria.where("startDate").gte(searchCriteria.getMinDate()));
             ops.add(dateThreshold);
         }
         
