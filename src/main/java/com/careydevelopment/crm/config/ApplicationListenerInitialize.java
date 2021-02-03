@@ -1,16 +1,21 @@
 package com.careydevelopment.crm.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 
-import com.careydevelopment.crm.model.Contact;
+import com.careydevelopment.crm.model.Activity;
+import com.careydevelopment.crm.model.SearchCriteria;
 import com.careydevelopment.crm.repository.ActivityOutcomeRepository;
 import com.careydevelopment.crm.repository.ActivityRepository;
 import com.careydevelopment.crm.repository.ActivityTypeRepository;
 import com.careydevelopment.crm.repository.DealRepository;
 import com.careydevelopment.crm.repository.DealStageRepository;
+import com.careydevelopment.crm.service.ActivityService;
 import com.careydevelopment.crm.service.ContactService;
 
 @Component
@@ -37,9 +42,11 @@ public class ApplicationListenerInitialize implements ApplicationListener<Applic
     @Autowired
     private ContactService contactService;
     
+    @Autowired
+    private ActivityService activityService;
+    
     public void onApplicationEvent(ApplicationReadyEvent event) {
 
-    }
-        
+    }    
 
 }

@@ -10,7 +10,6 @@ public class ActivityType extends ActivityTypeLightweight {
     private Boolean requiresOutcome = true;
     private Boolean usesLocation = false;
     
-    private String icon;
     private List<ActivityOutcome> possibleOutcomes = new ArrayList<>();
     
     public Boolean getRequiresOutcome() {
@@ -18,12 +17,6 @@ public class ActivityType extends ActivityTypeLightweight {
     }
     public void setRequiresOutcome(Boolean requiresOutcome) {
         this.requiresOutcome = requiresOutcome;
-    }
-    public String getIcon() {
-        return icon;
-    }
-    public void setIcon(String icon) {
-        this.icon = icon;
     }
     
     public List<ActivityOutcome> getPossibleOutcomes() {

@@ -17,6 +17,8 @@ public class ActivityTypeLightweight {
     @Size(max = 20, message = "Activity type name must be between 1 and 20 characters")
     private String name;
     
+    private String icon;
+
     
     public String getId() {
         return id;
@@ -35,6 +37,16 @@ public class ActivityTypeLightweight {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    
+    public String getIcon() {
+        return icon;
+    }
+
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
 
