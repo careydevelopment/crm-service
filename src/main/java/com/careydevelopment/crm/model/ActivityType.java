@@ -1,4 +1,4 @@
-package com.careydevelopment.crm.model;
+ package com.careydevelopment.crm.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ public class ActivityType extends ActivityTypeLightweight {
 
     private Boolean requiresOutcome = true;
     private Boolean usesLocation = false;
+    private Boolean usesEndDate = false;
     
     private List<ActivityOutcome> possibleOutcomes = new ArrayList<>();
     
@@ -26,6 +27,12 @@ public class ActivityType extends ActivityTypeLightweight {
         this.possibleOutcomes = possibleOutcomes;
     }
     
+    public Boolean getUsesEndDate() {
+        return usesEndDate;
+    }
+    public void setUsesEndDate(Boolean usesEndDate) {
+        this.usesEndDate = usesEndDate;
+    }
     
     public Boolean getUsesLocation() {
         return usesLocation;
