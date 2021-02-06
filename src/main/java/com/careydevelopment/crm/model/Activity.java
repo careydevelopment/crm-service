@@ -37,7 +37,7 @@ public class Activity {
     
     @NotNull(message = "Please associate a contact with this activity")
     private Contact contact;
-
+    
     public String getId() {
         return id;
     }

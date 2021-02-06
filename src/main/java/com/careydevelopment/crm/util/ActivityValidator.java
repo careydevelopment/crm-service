@@ -16,11 +16,13 @@ import com.careydevelopment.crm.model.ActivityType;
 import com.careydevelopment.crm.model.ActivityTypeLightweight;
 import com.careydevelopment.crm.model.Contact;
 import com.careydevelopment.crm.model.ErrorResponse;
+import com.careydevelopment.crm.model.SalesOwner;
 import com.careydevelopment.crm.model.ValidationError;
 import com.careydevelopment.crm.repository.ActivityOutcomeRepository;
 import com.careydevelopment.crm.repository.ActivityTypeRepository;
 import com.careydevelopment.crm.service.ContactService;
 import com.careydevelopment.crm.service.ServiceException;
+import com.careydevelopment.crm.service.UserService;
 
 @Component
 public class ActivityValidator {
@@ -37,6 +39,8 @@ public class ActivityValidator {
     @Autowired
     private ActivityOutcomeRepository activityOutcomeRepository;
     
+    @Autowired
+    private UserService userService;
     
     public ErrorResponse validateActivity(Activity activity, String bearerToken) {
         ErrorResponse errorResponse = new ErrorResponse();        
@@ -79,8 +83,10 @@ public class ActivityValidator {
                     Account account = new Account();
                     account.setId(fetchedContact.getAccount().getId());
                     account.setName(fetchedContact.getAccount().getName());
-                   
                     contact.setAccount(account);
+                    
+                    SalesOwner salesOwner = userService.fetchUser(bearerToken);
+                    contact.setSalesOwner(salesOwner);
                 } catch (ServiceException se) {
                     LOG.error("Problem fetching contact!", se);
                     
