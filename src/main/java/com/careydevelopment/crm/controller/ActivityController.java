@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -101,7 +102,7 @@ public class ActivityController {
     
     
     @GetMapping("/{id}")
-    public ResponseEntity<?> fetchActivityById(@PathVariable String id, HttpServletRequest request) {
+    public ResponseEntity<?> fetchActivityById(@PathVariable String id) {
         LOG.debug("Fetching activity " + id);
        
         Optional<Activity> activityOpt = activityRepository.findById(id);
@@ -119,5 +120,29 @@ public class ActivityController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not find activity " + id);
         }        
+    }
+    
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateActivity(@PathVariable("id") String id, @Valid @RequestBody Activity activity, 
+            HttpServletRequest request) {
+        LOG.debug("Updating activity id: " + id + " with data " + activity);
+                
+        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        
+        if (id == null || id.trim().length() == 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID is required");
+        } else if (!id.equals(activity.getId())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID in URL and body don't match");
+        }
+
+        ErrorResponse errorResponse = activityValidator.validateActivity(activity, bearerToken);
+        if (errorResponse != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        } 
+        
+        Activity newActivity = activityRepository.save(activity); 
+        
+        return ResponseEntity.ok(newActivity);
     }
 }
