@@ -37,4 +37,38 @@ public class Price {
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
     }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+        result = prime * result + ((currencyType == null) ? 0 : currencyType.hashCode());
+        result = prime * result + ((priceType == null) ? 0 : priceType.hashCode());
+        result = prime * result + ((unitType == null) ? 0 : unitType.hashCode());
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Price other = (Price) obj;
+        if (amount == null) {
+            if (other.amount != null)
+                return false;
+        } else if (!amount.equals(other.amount))
+            return false;
+        if (currencyType != other.currencyType)
+            return false;
+        if (priceType != other.priceType)
+            return false;
+        if (unitType != other.unitType)
+            return false;
+        return true;
+    }
 }

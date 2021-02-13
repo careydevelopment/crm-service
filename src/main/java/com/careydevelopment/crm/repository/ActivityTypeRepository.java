@@ -12,4 +12,6 @@ import com.careydevelopment.crm.model.ActivityType;
 public interface ActivityTypeRepository extends MongoRepository<ActivityType, String> {
 
     public List<ActivityType> findAllByOrderByNameAsc();
+
+    public ActivityType findByName(String name);
 }

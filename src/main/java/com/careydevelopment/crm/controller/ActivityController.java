@@ -72,6 +72,8 @@ public class ActivityController {
                 searchCriteria.setOrderBy(orderBy);
                 searchCriteria.setOrderType("ASC".equals(orderType) ? Direction.ASC : Direction.DESC);
                 
+                LOG.debug("Search criteria is " + searchCriteria);
+                
                 List<Activity> activities = activityService.search(searchCriteria);
                 LOG.debug("Returning activities " + activities);
                 return ResponseEntity.ok(activities);                
