@@ -3,6 +3,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 public class ActivityType extends ActivityTypeLightweight {
@@ -12,7 +14,7 @@ public class ActivityType extends ActivityTypeLightweight {
     private Boolean usesEndDate = false;
     
     private List<ActivityOutcome> possibleOutcomes = new ArrayList<>();
-    
+        
     public Boolean getRequiresOutcome() {
         return requiresOutcome;
     }

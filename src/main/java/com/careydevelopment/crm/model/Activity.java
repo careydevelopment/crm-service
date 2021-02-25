@@ -37,7 +37,7 @@ public class Activity {
     
     @NotNull(message = "Please associate a contact with this activity")
     private Contact contact;
-    
+        
     public String getId() {
         return id;
     }
@@ -109,7 +109,7 @@ public class Activity {
     public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
-
+    
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
     }

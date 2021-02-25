@@ -32,6 +32,9 @@ public class Deal {
     private Integer units;
     
     private DealStage stage;
+
+    private Long expectedClosureDate;
+    
     
     public String getId() {
         return id;
@@ -115,6 +118,18 @@ public class Deal {
 
     public void setStage(DealStage stage) {
         this.stage = stage;
+    }
+
+
+
+    public Long getExpectedClosureDate() {
+        return expectedClosureDate;
+    }
+
+
+
+    public void setExpectedClosureDate(Long expectedClosureDate) {
+        this.expectedClosureDate = expectedClosureDate;
     }
 
 

@@ -1,6 +1,7 @@
 package com.careydevelopment.crm.model;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -19,6 +20,8 @@ public class ActivityTypeLightweight {
     
     private String icon;
 
+    @NotNull(message = "Please include an activity type creator")
+    private ActivityTypeCreator activityTypeCreator;
     
     public String getId() {
         return id;
@@ -50,6 +53,17 @@ public class ActivityTypeLightweight {
     }
 
     
+    
+    public ActivityTypeCreator getActivityTypeCreator() {
+        return activityTypeCreator;
+    }
+
+
+    public void setActivityTypeCreator(ActivityTypeCreator activityTypeCreator) {
+        this.activityTypeCreator = activityTypeCreator;
+    }
+
+
     @Override
     public int hashCode() {
         final int prime = 31;

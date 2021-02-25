@@ -26,14 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.careydevelopment.crm.model.Activity;
 import com.careydevelopment.crm.model.Contact;
+import com.careydevelopment.crm.model.ContactSearchCriteria;
 import com.careydevelopment.crm.model.ErrorResponse;
-import com.careydevelopment.crm.model.SalesOwner;
-import com.careydevelopment.crm.model.SearchCriteria;
 import com.careydevelopment.crm.repository.ActivityRepository;
 import com.careydevelopment.crm.service.ActivityService;
 import com.careydevelopment.crm.service.ContactService;
 import com.careydevelopment.crm.service.ServiceException;
-import com.careydevelopment.crm.service.UserService;
 import com.careydevelopment.crm.util.ActivityValidator;
 
 @CrossOrigin(origins = "*")
@@ -66,7 +64,7 @@ public class ActivityController {
             Contact contact = contactService.fetchContact(bearerToken, contactId);
             
             if (contact != null) {
-                SearchCriteria searchCriteria = new SearchCriteria();
+                ContactSearchCriteria searchCriteria = new ContactSearchCriteria();
                 searchCriteria.setContactId(contactId);
                 searchCriteria.setMinDate(minDate);
                 searchCriteria.setOrderBy(orderBy);
@@ -117,6 +115,8 @@ public class ActivityController {
             if (!contact.getSalesOwner().getUsername().equals(username)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
             }
+            
+            LOG.debug("Returning activity " + activity);
             
             return ResponseEntity.status(HttpStatus.OK).body(activity);   
         } else {

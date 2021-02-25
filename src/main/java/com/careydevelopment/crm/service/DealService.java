@@ -13,41 +13,31 @@ import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
-import com.careydevelopment.crm.model.Activity;
-import com.careydevelopment.crm.model.ContactSearchCriteria;
+import com.careydevelopment.crm.model.Deal;
+import com.careydevelopment.crm.model.DealSearchCriteria;
 
 @Service
-public class ActivityService {
+public class DealService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ActivityService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DealService.class);
     
     
     @Autowired
     private MongoTemplate mongoTemplate;
 
     
-    public List<Activity> search(ContactSearchCriteria searchCriteria) {
+    public List<Deal> search(DealSearchCriteria searchCriteria) {
         List<AggregationOperation> ops = new ArrayList<>();
         
         if (searchCriteria.getContactId() != null) {
             AggregationOperation contactMatch = Aggregation.match(Criteria.where("contact._id").is(new ObjectId(searchCriteria.getContactId())));
             ops.add(contactMatch);
         }
-        
-        if (searchCriteria.getMinDate() != null) {
-            AggregationOperation dateThreshold = Aggregation.match(Criteria.where("startDate").gte(searchCriteria.getMinDate()));
-            ops.add(dateThreshold);
-        }
-        
-        if (searchCriteria.getOrderBy() != null && searchCriteria.getOrderType() != null) {
-            AggregationOperation sort = Aggregation.sort(searchCriteria.getOrderType(), searchCriteria.getOrderBy());
-            ops.add(sort);
-        }
-        
+                
         Aggregation aggregation = Aggregation.newAggregation(ops);
         
-        List<Activity> activities = mongoTemplate.aggregate(aggregation, mongoTemplate.getCollectionName(Activity.class), Activity.class).getMappedResults();
+        List<Deal> deals = mongoTemplate.aggregate(aggregation, mongoTemplate.getCollectionName(Deal.class), Deal.class).getMappedResults();
         
-        return activities;
+        return deals;
     }
 }

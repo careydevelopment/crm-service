@@ -1,11 +1,14 @@
 package com.careydevelopment.crm.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import com.careydevelopment.crm.model.ActivityOutcome;
+import com.careydevelopment.crm.model.Deal;
+import com.careydevelopment.crm.model.DealSearchCriteria;
 import com.careydevelopment.crm.repository.ActivityOutcomeRepository;
 import com.careydevelopment.crm.repository.ActivityRepository;
 import com.careydevelopment.crm.repository.ActivityTypeRepository;
@@ -13,6 +16,7 @@ import com.careydevelopment.crm.repository.DealRepository;
 import com.careydevelopment.crm.repository.DealStageRepository;
 import com.careydevelopment.crm.service.ActivityService;
 import com.careydevelopment.crm.service.ContactService;
+import com.careydevelopment.crm.service.DealService;
 import com.careydevelopment.crm.service.UserService;
 
 @Component
@@ -45,7 +49,20 @@ public class ApplicationListenerInitialize implements ApplicationListener<Applic
     @Autowired
     private UserService userService;
     
+    @Autowired
+    private DealService dealService;
 
     public void onApplicationEvent(ApplicationReadyEvent event) {
+        try {
+            DealSearchCriteria criteria = new DealSearchCriteria();
+            criteria.setContactId("6014199147692f2a4194ff9b");
+            
+            List<Deal> deals = dealService.search(criteria);
+            System.err.println(deals);
+            
+            System.err.println("done");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
