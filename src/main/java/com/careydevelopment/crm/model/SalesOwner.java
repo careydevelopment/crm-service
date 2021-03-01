@@ -2,13 +2,12 @@ package com.careydevelopment.crm.model;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-public class Contact {
+public class SalesOwner {
 
     private String id;
     private String firstName;
     private String lastName;
-    private Account account;
-    private SalesOwner salesOwner;
+    private String username;
     
     public String getId() {
         return id;
@@ -28,17 +27,15 @@ public class Contact {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    public Account getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setUsername(String username) {
+        this.username = username;
     }
-    public SalesOwner getSalesOwner() {
-        return salesOwner;
-    }
-    public void setSalesOwner(SalesOwner salesOwner) {
-        this.salesOwner = salesOwner;
+    
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
     
     @Override
@@ -57,7 +54,7 @@ public class Contact {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Contact other = (Contact) obj;
+        SalesOwner other = (SalesOwner) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -65,9 +62,5 @@ public class Contact {
             return false;
         return true;
     }
-    
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this);
-    }
-    
+
 }

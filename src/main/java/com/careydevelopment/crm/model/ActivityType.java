@@ -1,7 +1,9 @@
-package com.careydevelopment.crm.model;
+ package com.careydevelopment.crm.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
@@ -9,21 +11,15 @@ public class ActivityType extends ActivityTypeLightweight {
 
     private Boolean requiresOutcome = true;
     private Boolean usesLocation = false;
+    private Boolean usesEndDate = false;
     
-    private String icon;
     private List<ActivityOutcome> possibleOutcomes = new ArrayList<>();
-    
+        
     public Boolean getRequiresOutcome() {
         return requiresOutcome;
     }
     public void setRequiresOutcome(Boolean requiresOutcome) {
         this.requiresOutcome = requiresOutcome;
-    }
-    public String getIcon() {
-        return icon;
-    }
-    public void setIcon(String icon) {
-        this.icon = icon;
     }
     
     public List<ActivityOutcome> getPossibleOutcomes() {
@@ -33,6 +29,12 @@ public class ActivityType extends ActivityTypeLightweight {
         this.possibleOutcomes = possibleOutcomes;
     }
     
+    public Boolean getUsesEndDate() {
+        return usesEndDate;
+    }
+    public void setUsesEndDate(Boolean usesEndDate) {
+        this.usesEndDate = usesEndDate;
+    }
     
     public Boolean getUsesLocation() {
         return usesLocation;

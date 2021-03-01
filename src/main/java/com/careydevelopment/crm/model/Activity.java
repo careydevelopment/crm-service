@@ -29,12 +29,15 @@ public class Activity {
     @Size(max = 50, message = "Activity location must not exceed 50 characters")
     private String location;
     
-    @NotNull(message = "Please include an activity date")
-    private Long date;
+    @NotNull(message = "Please include an activity start date")
+    private Long startDate;
+
+    @NotNull(message = "Please include an activity end date")
+    private Long endDate;
     
     @NotNull(message = "Please associate a contact with this activity")
     private Contact contact;
-
+        
     public String getId() {
         return id;
     }
@@ -83,14 +86,6 @@ public class Activity {
         this.location = location;
     }
 
-    public Long getDate() {
-        return date;
-    }
-
-    public void setDate(Long date) {
-        this.date = date;
-    }
-
     public Contact getContact() {
         return contact;
     }
@@ -99,7 +94,48 @@ public class Activity {
         this.contact = contact;
     }
     
+    public Long getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Long startDate) {
+        this.startDate = startDate;
+    }
+
+    public Long getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Long endDate) {
+        this.endDate = endDate;
+    }
+    
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Activity other = (Activity) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
 }

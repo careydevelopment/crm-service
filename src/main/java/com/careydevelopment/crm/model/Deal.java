@@ -32,6 +32,9 @@ public class Deal {
     private Integer units;
     
     private DealStage stage;
+
+    private Long expectedClosureDate;
+    
     
     public String getId() {
         return id;
@@ -119,6 +122,18 @@ public class Deal {
 
 
 
+    public Long getExpectedClosureDate() {
+        return expectedClosureDate;
+    }
+
+
+
+    public void setExpectedClosureDate(Long expectedClosureDate) {
+        this.expectedClosureDate = expectedClosureDate;
+    }
+
+
+
     public Integer getValue(CurrencyType currencyType) {
         Integer value = 0;
         
@@ -180,5 +195,30 @@ public class Deal {
     
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Deal other = (Deal) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
 }
