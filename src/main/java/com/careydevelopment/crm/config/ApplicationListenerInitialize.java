@@ -53,16 +53,6 @@ public class ApplicationListenerInitialize implements ApplicationListener<Applic
     private DealService dealService;
 
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        try {
-            DealSearchCriteria criteria = new DealSearchCriteria();
-            criteria.setContactId("6014199147692f2a4194ff9b");
-            
-            List<Deal> deals = dealService.search(criteria);
-            System.err.println(deals);
-            
-            System.err.println("done");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 }
