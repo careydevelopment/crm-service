@@ -2,6 +2,7 @@ package com.careydevelopment.crm.model;
 
 import java.util.Optional;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,6 +30,7 @@ public class Deal {
     @NotNull(message = "Please associate this deal with a contact")
     private Contact contact;
     
+    @Min(value=1, message="Units must be at least 1")
     private Integer units;
     
     private DealStage stage;

@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import com.careydevelopment.crm.model.Deal;
-import com.careydevelopment.crm.model.DealSearchCriteria;
+import com.careydevelopment.crm.model.SalesOwner;
 import com.careydevelopment.crm.repository.ActivityOutcomeRepository;
 import com.careydevelopment.crm.repository.ActivityRepository;
 import com.careydevelopment.crm.repository.ActivityTypeRepository;
@@ -53,6 +53,5 @@ public class ApplicationListenerInitialize implements ApplicationListener<Applic
     private DealService dealService;
 
     public void onApplicationEvent(ApplicationReadyEvent event) {
-
     }
 }

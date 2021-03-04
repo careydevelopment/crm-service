@@ -31,7 +31,7 @@ public class ActivityValidator {
     
     
     @Autowired
-    private ContactService contactService;
+    private ContactValidator contactValidator;
     
     @Autowired
     private ActivityTypeRepository activityTypeRepository;
@@ -39,15 +39,14 @@ public class ActivityValidator {
     @Autowired
     private ActivityOutcomeRepository activityOutcomeRepository;
     
-    @Autowired
-    private UserService userService;
     
     public ErrorResponse validateActivity(Activity activity, String bearerToken) {
         ErrorResponse errorResponse = new ErrorResponse();        
 
         activity = (Activity)SpaceUtil.trimReflective(activity);
         
-        validateContact(activity.getContact(), errorResponse, bearerToken);
+        contactValidator.validateContact(activity.getContact(), errorResponse, bearerToken);
+        
         validateActivityType(activity.getType(), errorResponse);        
         validateActivityOutcome(activity.getOutcome(), errorResponse);
         
@@ -65,45 +64,10 @@ public class ActivityValidator {
     
     private void validateStartDate(Long startDate, ErrorResponse errorResponse) {
         if (startDate == null) {
-            addError(errorResponse, "Date required", "startDate", "dateRequired");
+            ErrorHandler.addError(errorResponse, "Date required", "startDate", "dateRequired");
         }
     }
-    
-        
-    private void validateContact(Contact contact, ErrorResponse errorResponse, String bearerToken) {
-        if (contact != null) {
-            if (!StringUtils.isBlank(contact.getId())) {
-                try {
-                    Contact fetchedContact = contactService.fetchContact(bearerToken, contact.getId());
-                    
-                    //rather than validate all this data, just set it from the source of truth
-                    contact.setFirstName(fetchedContact.getFirstName());
-                    contact.setLastName(contact.getLastName());
-                    
-                    Account account = new Account();
-                    account.setId(fetchedContact.getAccount().getId());
-                    account.setName(fetchedContact.getAccount().getName());
-                    contact.setAccount(account);
-                    
-                    SalesOwner salesOwner = userService.fetchUser(bearerToken);
-                    contact.setSalesOwner(salesOwner);
-                } catch (ServiceException se) {
-                    LOG.error("Problem fetching contact!", se);
-                    
-                    if (se.getStatusCode() == HttpStatus.NOT_FOUND.value()) {
-                        addError(errorResponse, "Invalid contact ID: " + contact.getId(), "contact", "invalidContactId");
-                    } else {
-                        addError(errorResponse, "Problem retrieving contact " + contact.getId(), "contact", "internalError");
-                    }
-                }
-            } else {
-                addError(errorResponse, "Missing contact ID", "contact", "missingContactId");
-            }
-        } else {
-            addError(errorResponse, "Missing contact", "contact", "missingContact");
-        }
-    }
-
+            
     
     private void validateActivityType(ActivityTypeLightweight activityType, ErrorResponse errorResponse) {
         if (activityType != null) {
@@ -116,13 +80,13 @@ public class ActivityValidator {
                     activityType.setIcon(fetchedActivityType.getIcon());
                     activityType.setName(fetchedActivityType.getName());
                 } else {
-                    addError(errorResponse, "Invalid activity type ID: " + activityType.getId(), "type", "invalidActivityTypeId");
+                    ErrorHandler.addError(errorResponse, "Invalid activity type ID: " + activityType.getId(), "type", "invalidActivityTypeId");
                 }
             } else {
-                addError(errorResponse, "Missing activity type ID", "type", "missingActivityTypeId");                
+                ErrorHandler.addError(errorResponse, "Missing activity type ID", "type", "missingActivityTypeId");                
             }
         } else {
-            addError(errorResponse, "Missing activity type", "type", "missingActivityType");
+            ErrorHandler.addError(errorResponse, "Missing activity type", "type", "missingActivityType");
         }
     }
     
@@ -137,21 +101,11 @@ public class ActivityValidator {
 
                     activityOutcome.setName(fetchedActivityOutcome.getName());
                 } else {
-                    addError(errorResponse, "Invalid activity outcome ID: " + activityOutcome.getId(), "outcome", "invalidActivityOutcomeId");
+                    ErrorHandler.addError(errorResponse, "Invalid activity outcome ID: " + activityOutcome.getId(), "outcome", "invalidActivityOutcomeId");
                 }
             } else {
                 activityOutcome = null;                
             }
         } 
-    }
-    
-    
-    private void addError(ErrorResponse errorResponse, String errorMessage, String field, String code) {        
-        ValidationError validationError = new ValidationError();
-        validationError.setCode(code);
-        validationError.setDefaultMessage(errorMessage);
-        validationError.setField(field);
-        
-        errorResponse.getErrors().add(validationError);
     }
 }
