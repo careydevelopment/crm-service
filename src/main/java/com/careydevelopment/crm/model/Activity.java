@@ -38,6 +38,8 @@ public class Activity {
     @NotNull(message = "Please associate a contact with this activity")
     private Contact contact;
         
+    private DealLightweight deal;
+    
     public String getId() {
         return id;
     }
@@ -110,6 +112,14 @@ public class Activity {
         this.endDate = endDate;
     }
     
+    public DealLightweight getDeal() {
+        return deal;
+    }
+
+    public void setDeal(DealLightweight deal) {
+        this.deal = deal;
+    }
+
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
     }
