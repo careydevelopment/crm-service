@@ -16,7 +16,7 @@ public class DealStage {
     private String id;
     
     @NotNull(message = "Please include a sales type")
-    private SalesType salesType;
+    private String salesType;
     
     @Min(value = 0, message = "Index must be at least 0")
     private Integer index;
@@ -33,11 +33,11 @@ public class DealStage {
         this.id = id;
     }
 
-    public SalesType getSalesType() {
+    public String getSalesType() {
         return salesType;
     }
 
-    public void setSalesType(SalesType salesType) {
+    public void setSalesType(String salesType) {
         this.salesType = salesType;
     }
 

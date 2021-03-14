@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careydevelopment.crm.model.DealStage;
@@ -27,8 +28,8 @@ public class DealStageController {
     
     
     @GetMapping("")
-    public ResponseEntity<?> fetchAllStages() {
-        List<DealStage> dealStages = dealStageRepository.findAllByOrderByIndexAsc();
+    public ResponseEntity<?> fetchAllStagesByStageType(@RequestParam String salesType) {
+        List<DealStage> dealStages = dealStageRepository.findAllBySalesTypeOrderByIndexAsc(salesType);
         return ResponseEntity.ok(dealStages);
     }
 }
