@@ -11,5 +11,5 @@ import com.careydevelopment.crm.model.DealStage;
 @Repository
 public interface DealStageRepository extends MongoRepository<DealStage, String> {
 
-    public List<DealStage> findAllByOrderByIndexAsc();
+    public List<DealStage> findAllBySalesTypeOrderByIndexAsc(String salesType);
 }
