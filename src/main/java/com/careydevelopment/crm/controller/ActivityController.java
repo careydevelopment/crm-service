@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careydevelopment.crm.model.Activity;
+import com.careydevelopment.crm.model.ActivitySearchCriteria;
 import com.careydevelopment.crm.model.Contact;
-import com.careydevelopment.crm.model.ContactSearchCriteria;
 import com.careydevelopment.crm.model.ErrorResponse;
 import com.careydevelopment.crm.repository.ActivityRepository;
 import com.careydevelopment.crm.service.ActivityService;
@@ -57,27 +58,31 @@ public class ActivityController {
     
     @GetMapping("/search")
     public ResponseEntity<?> search(@RequestParam(required = false) String contactId, @RequestParam(required = false) Long minDate,
-            @RequestParam(required = false) String orderBy, @RequestParam(required = false) String orderType, HttpServletRequest request) {
+            @RequestParam(required = false) String orderBy, @RequestParam(required = false) String orderType, 
+            @RequestParam(required = false) String dealId, HttpServletRequest request) {
+        
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-
+        Contact contact = null;
+        
         try {
-            Contact contact = contactService.fetchContact(bearerToken, contactId);
-            
-            if (contact != null) {
-                ContactSearchCriteria searchCriteria = new ContactSearchCriteria();
-                searchCriteria.setContactId(contactId);
-                searchCriteria.setMinDate(minDate);
-                searchCriteria.setOrderBy(orderBy);
-                searchCriteria.setOrderType("ASC".equals(orderType) ? Direction.ASC : Direction.DESC);
-                
-                LOG.debug("Search criteria is " + searchCriteria);
-                
-                List<Activity> activities = activityService.search(searchCriteria);
-                LOG.debug("Returning activities " + activities);
-                return ResponseEntity.ok(activities);                
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No contact with ID:" + contactId);
+            if (!StringUtils.isBlank(contactId)) {
+                contact = contactService.fetchContact(bearerToken, contactId);
+                if (contact == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No contact with ID:" + contactId);
             }
+            
+            ActivitySearchCriteria searchCriteria = new ActivitySearchCriteria();
+            searchCriteria.setContactId(contactId);
+            searchCriteria.setMinDate(minDate);
+            searchCriteria.setOrderBy(orderBy);
+            searchCriteria.setOrderType("ASC".equals(orderType) ? Direction.ASC : Direction.DESC);
+            searchCriteria.setDealId(dealId);
+            
+            LOG.debug("Search criteria is " + searchCriteria);
+            
+            List<Activity> activities = activityService.search(searchCriteria);
+            LOG.debug("Returning activities " + activities);
+            
+            return ResponseEntity.ok(activities);                
         } catch (ServiceException se) {
             return ResponseEntity.status(HttpStatus.valueOf(se.getStatusCode())).body(se.getMessage());
         }

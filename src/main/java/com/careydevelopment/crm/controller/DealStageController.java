@@ -28,7 +28,7 @@ public class DealStageController {
     
     
     @GetMapping("")
-    public ResponseEntity<?> fetchAllStagesByStageType(@RequestParam String salesType) {
+    public ResponseEntity<?> fetchAllStagesBySalesType(@RequestParam String salesType) {
         List<DealStage> dealStages = dealStageRepository.findAllBySalesTypeOrderByIndexAsc(salesType);
         return ResponseEntity.ok(dealStages);
     }

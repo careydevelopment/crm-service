@@ -3,12 +3,13 @@ package com.careydevelopment.crm.model;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.domain.Sort.Direction;
 
-public class ContactSearchCriteria {
+public class ActivitySearchCriteria {
 
     private String contactId;
     private Long minDate;
     private String orderBy = "startDate";
     private Direction orderType = Direction.DESC;
+    private String dealId;
     
     
     public String getContactId() {
@@ -35,6 +36,13 @@ public class ContactSearchCriteria {
     }
     public void setOrderType(Direction orderType) {
         this.orderType = orderType;
+    }
+    
+    public String getDealId() {
+        return dealId;
+    }
+    public void setDealId(String dealId) {
+        this.dealId = dealId;
     }
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
