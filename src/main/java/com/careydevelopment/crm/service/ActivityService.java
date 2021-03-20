@@ -3,6 +3,7 @@ package com.careydevelopment.crm.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import com.careydevelopment.crm.model.Activity;
-import com.careydevelopment.crm.model.ContactSearchCriteria;
+import com.careydevelopment.crm.model.ActivitySearchCriteria;
 
 @Service
 public class ActivityService {
@@ -26,10 +27,10 @@ public class ActivityService {
     private MongoTemplate mongoTemplate;
 
     
-    public List<Activity> search(ContactSearchCriteria searchCriteria) {
+    public List<Activity> search(ActivitySearchCriteria searchCriteria) {
         List<AggregationOperation> ops = new ArrayList<>();
         
-        if (searchCriteria.getContactId() != null) {
+        if (!StringUtils.isBlank(searchCriteria.getContactId())) {
             AggregationOperation contactMatch = Aggregation.match(Criteria.where("contact._id").is(new ObjectId(searchCriteria.getContactId())));
             ops.add(contactMatch);
         }
@@ -39,6 +40,11 @@ public class ActivityService {
             ops.add(dateThreshold);
         }
         
+        if (!StringUtils.isBlank(searchCriteria.getDealId())) {
+            AggregationOperation deal = Aggregation.match(Criteria.where("deal._id").is(new ObjectId(searchCriteria.getDealId())));
+            ops.add(deal);
+        }
+
         if (searchCriteria.getOrderBy() != null && searchCriteria.getOrderType() != null) {
             AggregationOperation sort = Aggregation.sort(searchCriteria.getOrderType(), searchCriteria.getOrderBy());
             ops.add(sort);

@@ -3,8 +3,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 public class ActivityType extends ActivityTypeLightweight {

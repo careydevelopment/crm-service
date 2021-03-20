@@ -3,6 +3,7 @@ package com.careydevelopment.crm.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +30,34 @@ public class DealService {
     public List<Deal> search(DealSearchCriteria searchCriteria) {
         List<AggregationOperation> ops = new ArrayList<>();
         
-        if (searchCriteria.getContactId() != null) {
+        if (!StringUtils.isBlank(searchCriteria.getContactId())) {
             AggregationOperation contactMatch = Aggregation.match(Criteria.where("contact._id").is(new ObjectId(searchCriteria.getContactId())));
             ops.add(contactMatch);
+        }
+        
+        if (!StringUtils.isBlank(searchCriteria.getSalesOwnerId())) {
+            AggregationOperation salesOwnerMatch = Aggregation.match(Criteria.where("contact.salesOwner._id").is(new ObjectId(searchCriteria.getSalesOwnerId())));
+            ops.add(salesOwnerMatch);            
+        }
+
+        if (searchCriteria.getMinDate() != null) {
+            AggregationOperation minDate = Aggregation.match(Criteria.where("expectedClosureDate").gte(searchCriteria.getMinDate()));
+            ops.add(minDate);
+        }
+        
+        if (searchCriteria.getMaxDate() != null) {
+            AggregationOperation maxDate = Aggregation.match(Criteria.where("expectedClosureDate").lte(searchCriteria.getMaxDate()));
+            ops.add(maxDate);
+        }
+        
+        if (searchCriteria.getMaxResults() != null) {
+            AggregationOperation limit = Aggregation.limit(searchCriteria.getMaxResults());
+            ops.add(limit);
+        }
+        
+        if (!StringUtils.isBlank(searchCriteria.getOrderBy()) && searchCriteria.getOrderType() != null) {
+            AggregationOperation sort = Aggregation.sort(searchCriteria.getOrderType(), searchCriteria.getOrderBy());
+            ops.add(sort);
         }
                 
         Aggregation aggregation = Aggregation.newAggregation(ops);
