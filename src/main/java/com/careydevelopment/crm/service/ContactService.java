@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.careydevelopment.crm.model.Contact;
-import com.careydevelopment.crm.util.PropertiesUtil;
 
 import reactor.util.retry.Retry;
 
@@ -23,10 +22,7 @@ public class ContactService {
     private WebClient customerClient; 
     
     
-    public ContactService(@Value("${ecosystem.properties.file.location}") String ecosystemFile) {
-        PropertiesUtil propertiesUtil = new PropertiesUtil(ecosystemFile);
-        String endpoint = propertiesUtil.getProperty("ecosystem-customer-service.endpoint");
-        
+    public ContactService(@Value("${ecosystem-customer-service.endpoint}") String endpoint) {
         customerClient = WebClient
                     .builder()
                     .baseUrl(endpoint)

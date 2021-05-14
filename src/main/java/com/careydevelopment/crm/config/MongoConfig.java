@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-import com.careydevelopment.crm.util.PropertiesUtil;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 
@@ -20,8 +19,8 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Value("${mongo.db.name}") 
     private String crmDb;
     
-    @Value("${crm.properties.file.location}")
-    private String crmPropertiesFile;
+    @Value("${mongodb.carey-crm.connection}")
+    private String connectionString;
     
     @Override
     protected String getDatabaseName() {
@@ -32,8 +31,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Override
     @Bean
     public MongoClient mongoClient() {
-        PropertiesUtil propertiesUtil = new PropertiesUtil(crmPropertiesFile);
-        String connectionString = propertiesUtil.getProperty("mongodb.carey-crm.connection");
         String fullConnectionString = connectionString + "/" + crmDb;
         
         MongoClient client = MongoClients.create(fullConnectionString);
