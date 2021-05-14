@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.careydevelopment.crm.model.Product;
-import com.careydevelopment.crm.util.PropertiesUtil;
 
 import reactor.util.retry.Retry;
 
@@ -23,10 +22,7 @@ public class ProductService {
     private WebClient productClient; 
     
     
-    public ProductService(@Value("${ecosystem.properties.file.location}") String ecosystemFile) {
-        PropertiesUtil propertiesUtil = new PropertiesUtil(ecosystemFile);
-        String endpoint = propertiesUtil.getProperty("product-service.endpoint");
-        
+    public ProductService(@Value("${ecosystem-product-service.endpoint}") String endpoint) {
         productClient = WebClient
                     .builder()
                     .baseUrl(endpoint)
