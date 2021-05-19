@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.careydevelopment.crm.model.ActivityType;
 import com.careydevelopment.crm.repository.ActivityTypeRepository;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/activitytypes")
 public class ActivityTypeController {

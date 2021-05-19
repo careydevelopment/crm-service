@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.careydevelopment.crm.model.SalesType;
 import com.careydevelopment.crm.repository.SalesTypeRepository;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/salestypes")
 public class SalesTypeController {

@@ -35,7 +35,6 @@ import com.careydevelopment.crm.service.ContactService;
 import com.careydevelopment.crm.service.ServiceException;
 import com.careydevelopment.crm.util.ActivityValidator;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/activities")
 public class ActivityController {
@@ -60,6 +59,9 @@ public class ActivityController {
     public ResponseEntity<?> search(@RequestParam(required = false) String contactId, @RequestParam(required = false) Long minDate,
             @RequestParam(required = false) String orderBy, @RequestParam(required = false) String orderType, 
             @RequestParam(required = false) String dealId, HttpServletRequest request) {
+        
+        String ipAddress = request.getRemoteAddr() + ":" + request.getRemotePort();
+        LOG.debug("Remote IP address is " + ipAddress);
         
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         Contact contact = null;
