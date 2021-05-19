@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +35,7 @@ import com.careydevelopment.crm.service.DealService;
 import com.careydevelopment.crm.service.ServiceException;
 import com.careydevelopment.crm.service.UserService;
 import com.careydevelopment.crm.util.DealValidator;
+import com.careydevelopment.crm.util.SecurityUtil;
 
 @RestController
 @RequestMapping("/deals")
@@ -59,6 +59,9 @@ public class DealController {
     @Autowired
     private DealValidator dealValidator;
     
+    @Autowired
+    private SecurityUtil securityUtil;
+    
     
     @GetMapping("/search")
     public ResponseEntity<?> search(@RequestParam(required = false) String contactId, 
@@ -75,8 +78,9 @@ public class DealController {
             if (!StringUtils.isBlank(contactId)) {
                 Contact contact = contactService.fetchContact(bearerToken, contactId);
                 
-                if (contact == null) {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No contact with ID:" + contactId);
+                if (contact == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No contact with ID:" + contactId);
+                else if (!securityUtil.isAuthorizedToAccessContact(contact)) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
                 }
             }
             
@@ -120,10 +124,8 @@ public class DealController {
             Deal deal = dealOpt.get();
             
             Contact contact = deal.getContact();
-            LOG.debug("Contact is " + contact);
-            String username = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            if (!contact.getSalesOwner().getUsername().equals(username)) {
+            if (!securityUtil.isAuthorizedToAccessContact(contact)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
             }
             
@@ -141,6 +143,17 @@ public class DealController {
         LOG.debug("Updating deal " + id + " with data " + deal);
        
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        Optional<Deal> dealOpt = dealRepository.findById(id);
+        if (dealOpt.isPresent()) {
+            Deal existingDeal = dealOpt.get();
+            
+            Contact contact = existingDeal.getContact();
+
+            if (!securityUtil.isAuthorizedToAccessContact(contact)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            }
+        }
         
         if (id == null || id.trim().length() == 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID is required");
@@ -164,6 +177,15 @@ public class DealController {
         LOG.debug("I'm saving " + deal);
         
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        
+        if (deal.getContact() != null) {
+            Contact contact = contactService.fetchContact(bearerToken, deal.getContact().getId());
+            
+            if (contact == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No contact with ID:" + deal.getContact().getId());
+            else if (!securityUtil.isAuthorizedToAccessContact(contact)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+        }
         
         ErrorResponse errorResponse = dealValidator.validateDeal(deal, bearerToken);
         if (errorResponse != null) {

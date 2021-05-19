@@ -14,5 +14,7 @@ public interface ActivityRepository extends MongoRepository<Activity, String> {
     public List<Activity> findByContactIdOrderByStartDateDesc(String contactId);
     
     public List<Activity> findAllByOrderByStartDateDesc();
+    
+    public List<Activity> findByContactSalesOwnerIdOrderByStartDateDesc(String userId);
 
 }

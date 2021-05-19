@@ -44,6 +44,11 @@ public class ActivityService {
             AggregationOperation deal = Aggregation.match(Criteria.where("deal._id").is(new ObjectId(searchCriteria.getDealId())));
             ops.add(deal);
         }
+        
+        if (!StringUtils.isBlank(searchCriteria.getSalesOwnerId())) {
+            AggregationOperation owner = Aggregation.match(Criteria.where("contact.salesOwner._id").is(new ObjectId(searchCriteria.getSalesOwnerId())));
+            ops.add(owner);
+        }
 
         if (searchCriteria.getOrderBy() != null && searchCriteria.getOrderType() != null) {
             AggregationOperation sort = Aggregation.sort(searchCriteria.getOrderType(), searchCriteria.getOrderBy());

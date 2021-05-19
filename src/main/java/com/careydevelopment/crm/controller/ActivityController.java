@@ -14,8 +14,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,11 +27,14 @@ import com.careydevelopment.crm.model.Activity;
 import com.careydevelopment.crm.model.ActivitySearchCriteria;
 import com.careydevelopment.crm.model.Contact;
 import com.careydevelopment.crm.model.ErrorResponse;
+import com.careydevelopment.crm.model.SalesOwner;
 import com.careydevelopment.crm.repository.ActivityRepository;
 import com.careydevelopment.crm.service.ActivityService;
 import com.careydevelopment.crm.service.ContactService;
 import com.careydevelopment.crm.service.ServiceException;
+import com.careydevelopment.crm.service.UserService;
 import com.careydevelopment.crm.util.ActivityValidator;
+import com.careydevelopment.crm.util.SecurityUtil;
 
 @RestController
 @RequestMapping("/activities")
@@ -54,22 +55,40 @@ public class ActivityController {
     @Autowired
     private ActivityRepository activityRepository;
     
+    @Autowired
+    private SecurityUtil securityUtil;
+    
+    @Autowired
+    private UserService userService;
+    
     
     @GetMapping("/search")
     public ResponseEntity<?> search(@RequestParam(required = false) String contactId, @RequestParam(required = false) Long minDate,
             @RequestParam(required = false) String orderBy, @RequestParam(required = false) String orderType, 
-            @RequestParam(required = false) String dealId, HttpServletRequest request) {
+            @RequestParam(required = false) String dealId, @RequestParam(required = false) String salesOwnerId, HttpServletRequest request) {
         
         String ipAddress = request.getRemoteAddr() + ":" + request.getRemotePort();
         LOG.debug("Remote IP address is " + ipAddress);
         
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Contact contact = null;
         
         try {
             if (!StringUtils.isBlank(contactId)) {
-                contact = contactService.fetchContact(bearerToken, contactId);
+                Contact contact = contactService.fetchContact(bearerToken, contactId);
+                
                 if (contact == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No contact with ID:" + contactId);
+                else if (!securityUtil.isAuthorizedToAccessContact(contact)) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                }
+            }
+            
+            if (!StringUtils.isBlank(salesOwnerId)) {
+                SalesOwner salesOwner = userService.fetchUser(bearerToken);
+                
+                if (salesOwner == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No sales owner with ID:" + salesOwnerId);
+                else if (!securityUtil.isAuthorizedToAccessUser(salesOwner)) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                }
             }
             
             ActivitySearchCriteria searchCriteria = new ActivitySearchCriteria();
@@ -78,6 +97,7 @@ public class ActivityController {
             searchCriteria.setOrderBy(orderBy);
             searchCriteria.setOrderType("ASC".equals(orderType) ? Direction.ASC : Direction.DESC);
             searchCriteria.setDealId(dealId);
+            searchCriteria.setSalesOwnerId(salesOwnerId);
             
             LOG.debug("Search criteria is " + searchCriteria);
             
@@ -94,9 +114,18 @@ public class ActivityController {
     @PostMapping("")
     public ResponseEntity<?> createActivity(@Valid @RequestBody Activity activity, HttpServletRequest request) {
         LOG.debug("I'm saving " + activity);
-        
+
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         
+        if (activity.getContact() != null) {
+            Contact contact = contactService.fetchContact(bearerToken, activity.getContact().getId());
+            
+            if (contact == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No contact with ID:" + activity.getContact().getId());
+            else if (!securityUtil.isAuthorizedToAccessContact(contact)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+        }
+                
         ErrorResponse errorResponse = activityValidator.validateActivity(activity, bearerToken);
         if (errorResponse != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
@@ -114,12 +143,10 @@ public class ActivityController {
        
         Optional<Activity> activityOpt = activityRepository.findById(id);
         if (activityOpt.isPresent()) {
-            Activity activity = activityOpt.get();
-            
+            Activity activity = activityOpt.get();           
             Contact contact = activity.getContact();
-            String username = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            if (!contact.getSalesOwner().getUsername().equals(username)) {
+ 
+            if (!securityUtil.isAuthorizedToAccessContact(contact)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
             }
             
@@ -138,6 +165,16 @@ public class ActivityController {
         LOG.debug("Updating activity id: " + id + " with data " + activity);
                 
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        
+        Optional<Activity> activityOpt = activityRepository.findById(id);
+        if (activityOpt.isPresent()) {
+            Activity existingActivity = activityOpt.get();           
+            Contact contact = existingActivity.getContact();
+ 
+            if (!securityUtil.isAuthorizedToAccessContact(contact)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            }
+        }
         
         if (id == null || id.trim().length() == 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID is required");

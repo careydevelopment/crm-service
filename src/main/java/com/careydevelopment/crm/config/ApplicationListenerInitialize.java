@@ -57,5 +57,6 @@ public class ApplicationListenerInitialize implements ApplicationListener<Applic
     private SalesTypeRepository salesTypeRepo;
     
     public void onApplicationEvent(ApplicationReadyEvent event) {
+
     }
 }
