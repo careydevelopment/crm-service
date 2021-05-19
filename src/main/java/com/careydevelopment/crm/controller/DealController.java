@@ -37,7 +37,6 @@ import com.careydevelopment.crm.service.ServiceException;
 import com.careydevelopment.crm.service.UserService;
 import com.careydevelopment.crm.util.DealValidator;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/deals")
 public class DealController {

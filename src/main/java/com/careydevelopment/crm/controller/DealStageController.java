@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.careydevelopment.crm.model.DealStage;
 import com.careydevelopment.crm.repository.DealStageRepository;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/dealstages")
 public class DealStageController {
