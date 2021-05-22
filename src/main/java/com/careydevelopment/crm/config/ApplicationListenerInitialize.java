@@ -7,8 +7,8 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import com.careydevelopment.crm.model.Activity;
-import com.careydevelopment.crm.model.ActivitySearchCriteria;
+import com.careydevelopment.crm.model.ActivityOutcome;
+import com.careydevelopment.crm.model.OutcomeSentiment;
 import com.careydevelopment.crm.repository.ActivityOutcomeRepository;
 import com.careydevelopment.crm.repository.ActivityRepository;
 import com.careydevelopment.crm.repository.ActivityTypeRepository;
@@ -57,6 +57,6 @@ public class ApplicationListenerInitialize implements ApplicationListener<Applic
     private SalesTypeRepository salesTypeRepo;
     
     public void onApplicationEvent(ApplicationReadyEvent event) {
-
+        
     }
 }
