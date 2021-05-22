@@ -17,6 +17,8 @@ public class ActivityOutcome {
     @Size(max = 20, message = "Activity outcome name must be between 1 and 20 characters")
     private String name;
 
+    private OutcomeSentiment sentiment = OutcomeSentiment.NEUTRAL;
+    
     public String getId() {
         return id;
     }
@@ -35,6 +37,14 @@ public class ActivityOutcome {
     
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
+    }
+    
+    public OutcomeSentiment getSentiment() {
+        return sentiment;
+    }
+
+    public void setSentiment(OutcomeSentiment sentiment) {
+        this.sentiment = sentiment;
     }
 
     @Override

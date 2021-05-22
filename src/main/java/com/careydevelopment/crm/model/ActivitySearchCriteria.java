@@ -10,6 +10,7 @@ public class ActivitySearchCriteria {
     private String orderBy = "startDate";
     private Direction orderType = Direction.DESC;
     private String dealId;
+    private String salesOwnerId;
     
     
     public String getContactId() {
@@ -43,6 +44,12 @@ public class ActivitySearchCriteria {
     }
     public void setDealId(String dealId) {
         this.dealId = dealId;
+    }
+    public String getSalesOwnerId() {
+        return salesOwnerId;
+    }
+    public void setSalesOwnerId(String salesOwnerId) {
+        this.salesOwnerId = salesOwnerId;
     }
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
