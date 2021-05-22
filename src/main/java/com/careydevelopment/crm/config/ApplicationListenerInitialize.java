@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import com.careydevelopment.crm.model.ActivityOutcome;
-import com.careydevelopment.crm.model.OutcomeSentiment;
+import com.careydevelopment.crm.model.ActivityType;
 import com.careydevelopment.crm.repository.ActivityOutcomeRepository;
 import com.careydevelopment.crm.repository.ActivityRepository;
 import com.careydevelopment.crm.repository.ActivityTypeRepository;
@@ -19,6 +19,8 @@ import com.careydevelopment.crm.service.ActivityService;
 import com.careydevelopment.crm.service.ContactService;
 import com.careydevelopment.crm.service.DealService;
 import com.careydevelopment.crm.service.UserService;
+
+import us.careydevevlopment.model.activities.ActivityTypeCreator;
 
 @Component
 public class ApplicationListenerInitialize implements ApplicationListener<ApplicationReadyEvent>  {
@@ -57,6 +59,24 @@ public class ApplicationListenerInitialize implements ApplicationListener<Applic
     private SalesTypeRepository salesTypeRepo;
     
     public void onApplicationEvent(ApplicationReadyEvent event) {
+        List<ActivityOutcome> outcomes = activityOutcomeRepo.findAll();
+
+
+
+
+    }
+    
+    
+    private ActivityOutcome outcome(List<ActivityOutcome> outcomes, String match) {
+        ActivityOutcome outcome = new ActivityOutcome();
         
+        for (ActivityOutcome oc : outcomes) {
+            if (oc.getName().equals(match)) {
+                outcome = oc;
+                break;
+            }
+        }
+        
+        return outcome;
     }
 }
