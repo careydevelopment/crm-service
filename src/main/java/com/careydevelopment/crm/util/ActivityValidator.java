@@ -6,23 +6,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import com.careydevelopment.crm.model.Account;
 import com.careydevelopment.crm.model.Activity;
 import com.careydevelopment.crm.model.ActivityOutcome;
 import com.careydevelopment.crm.model.ActivityType;
-import com.careydevelopment.crm.model.ActivityTypeLightweight;
-import com.careydevelopment.crm.model.Contact;
 import com.careydevelopment.crm.model.ErrorResponse;
-import com.careydevelopment.crm.model.SalesOwner;
-import com.careydevelopment.crm.model.ValidationError;
 import com.careydevelopment.crm.repository.ActivityOutcomeRepository;
 import com.careydevelopment.crm.repository.ActivityTypeRepository;
-import com.careydevelopment.crm.service.ContactService;
-import com.careydevelopment.crm.service.ServiceException;
-import com.careydevelopment.crm.service.UserService;
 
 @Component
 public class ActivityValidator {
@@ -47,8 +38,8 @@ public class ActivityValidator {
         
         contactValidator.validateContact(activity.getContact(), errorResponse, bearerToken);
         
-        validateActivityType(activity.getType(), errorResponse);        
-        validateActivityOutcome(activity.getOutcome(), errorResponse);
+        validateActivityType((ActivityType)activity.getType(), errorResponse);        
+        validateActivityOutcome((ActivityOutcome)activity.getOutcome(), errorResponse);
         
         validateDates(activity, errorResponse);
         
@@ -69,7 +60,7 @@ public class ActivityValidator {
     }
             
     
-    private void validateActivityType(ActivityTypeLightweight activityType, ErrorResponse errorResponse) {
+    private void validateActivityType(ActivityType activityType, ErrorResponse errorResponse) {
         if (activityType != null) {
             if (!StringUtils.isBlank(activityType.getId())) {
                 Optional<ActivityType> fetchedActivityTypeOpt = activityTypeRepository.findById(activityType.getId());

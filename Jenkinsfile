@@ -8,8 +8,6 @@ node {
 	    	git branch: branch,
 	        	credentialsId: 'GitHub Credentials',
 	        	url: 'https://github.com/careydevelopment/crm-service.git'
-	       	
-	       	sh 'ls -la'
 	    } 
 	
 		stage('Build JAR') {

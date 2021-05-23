@@ -1,13 +1,18 @@
 package com.careydevelopment.crm.model;
 
+import java.time.ZoneId;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-public class SalesOwner {
+import us.careydevevlopment.model.activities.ActivityOwner;
+
+public class SalesOwner implements ActivityOwner {
 
     private String id;
     private String firstName;
     private String lastName;
     private String username;
+    private String timezone;
     
     public String getId() {
         return id;
@@ -32,6 +37,13 @@ public class SalesOwner {
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+    
+    public String getTimezone() {
+        return timezone;
+    }
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
     }
     
     public String toString() {
