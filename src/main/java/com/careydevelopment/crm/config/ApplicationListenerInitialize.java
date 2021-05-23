@@ -60,6 +60,84 @@ public class ApplicationListenerInitialize implements ApplicationListener<Applic
     
     public void onApplicationEvent(ApplicationReadyEvent event) {
         List<ActivityOutcome> outcomes = activityOutcomeRepo.findAll();
+        
+        
+    ActivityType type1 = new ActivityType();
+    type1.setIcon("phone");
+    type1.setName("Phone");
+    type1.setPossibleOutcomes(List.of(outcome(outcomes, "Not Interested"), outcome(outcomes, "Did Not Respond"),
+            outcome(outcomes, "Interested"), outcome(outcomes, "Appointment Scheduled"), outcome(outcomes, "Demo Scheduled"), outcome(outcomes, "Left Message")));
+    type1.setRequiresOutcome(true);
+    type1.setUsesLocation(false);
+    type1.setUsesEndDate(false);
+    type1.setActivityTypeCreator(ActivityTypeCreator.USER);
+    
+    ActivityType type2 = new ActivityType();
+    type2.setIcon("chat");
+    type2.setName("Chat");
+    type2.setPossibleOutcomes(List.of(outcome(outcomes, "Not Interested"), outcome(outcomes, "Did Not Respond"),
+            outcome(outcomes, "Interested"), outcome(outcomes, "Appointment Scheduled"), outcome(outcomes, "Demo Scheduled")));
+    type2.setRequiresOutcome(true);
+    type2.setUsesLocation(false);
+    type2.setUsesEndDate(false);
+    type2.setActivityTypeCreator(ActivityTypeCreator.USER);
+
+    ActivityType type3 = new ActivityType();
+    type3.setIcon("calendar_today");
+    type3.setName("Appointment");
+    type3.setPossibleOutcomes(List.of(outcome(outcomes, "Not Interested"), outcome(outcomes, "Did Not Respond"),
+            outcome(outcomes, "Interested"), outcome(outcomes, "Appointment Scheduled"), outcome(outcomes, "Demo Scheduled")));
+    type3.setRequiresOutcome(true);
+    type3.setUsesLocation(true);
+    type3.setUsesEndDate(true);
+    type3.setActivityTypeCreator(ActivityTypeCreator.USER);
+
+    
+    ActivityType type4 = new ActivityType();
+    type4.setIcon("textsms");
+    type4.setName("Text Message");
+    type4.setPossibleOutcomes(List.of(outcome(outcomes, "Not Interested"), outcome(outcomes, "Did Not Respond"),
+            outcome(outcomes, "Interested"), outcome(outcomes, "Appointment Scheduled"), outcome(outcomes, "Demo Scheduled")));
+    type4.setRequiresOutcome(true);
+    type4.setUsesLocation(false);
+    type4.setUsesEndDate(false);
+    type4.setActivityTypeCreator(ActivityTypeCreator.USER);
+
+    
+    ActivityType type5 = new ActivityType();
+    type5.setIcon("list_alt");
+    type5.setName("Web Form Completion");
+    type5.setRequiresOutcome(false);
+    type5.setUsesLocation(false);
+    type5.setUsesEndDate(false);
+    type5.setActivityTypeCreator(ActivityTypeCreator.SYSTEM);
+
+    
+    ActivityType type6 = new ActivityType();
+    type6.setIcon("web");
+    type6.setName("Web Page Visitied");
+    type6.setRequiresOutcome(false);
+    type6.setUsesLocation(false);
+    type6.setUsesEndDate(false);
+    type6.setActivityTypeCreator(ActivityTypeCreator.SYSTEM);
+
+    
+    ActivityType type7 = new ActivityType();
+    type7.setIcon("money");
+    type7.setName("Purchase");
+    type7.setRequiresOutcome(false);
+    type7.setUsesLocation(false);
+    type7.setUsesEndDate(false);
+    type7.setActivityTypeCreator(ActivityTypeCreator.SYSTEM);
+
+    
+    activityTypeRepo.save(type1);
+    activityTypeRepo.save(type2);
+    activityTypeRepo.save(type3);
+    activityTypeRepo.save(type4);
+    activityTypeRepo.save(type5);
+    activityTypeRepo.save(type6);
+    activityTypeRepo.save(type7);
 
 
 

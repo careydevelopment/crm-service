@@ -14,7 +14,7 @@
         <dependency>
             <groupId>us.careydevelopment.model</groupId>
             <artifactId>activities</artifactId>
-            <version>1.1.0-RELEASE</version>
+            <version>1.2.0-RELEASE</version>
         </dependency>
     </dependencies>
      

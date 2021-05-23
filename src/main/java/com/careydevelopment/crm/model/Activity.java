@@ -6,10 +6,14 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import us.careydevevlopment.model.activities.ActivityOwner;
 import us.careydevevlopment.model.activities.BaseActivity;
 
 
 @Document(collection = "#{@environment.getProperty('mongo.activity.collection')}")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Activity extends BaseActivity<ActivityOutcome, ActivityType> {
 
     @Id
@@ -52,13 +56,25 @@ public class Activity extends BaseActivity<ActivityOutcome, ActivityType> {
         this.type = type;
     }
 
-    
+    @Override
     public ActivityOutcome getOutcome() {
         return outcome;
     }
 
+    @Override
     public void setOutcome(ActivityOutcome outcome) {
         this.outcome = outcome;
+    }
+    
+    @Override
+    public SalesOwner getOwner() {
+        return contact.getSalesOwner();
+    }
+    
+    @Override
+    public void setOwner(ActivityOwner owner) {
+        // TODO do nothing for now
+        //owner details are stored with the contact
     }
     
     public String toString() {
@@ -89,4 +105,5 @@ public class Activity extends BaseActivity<ActivityOutcome, ActivityType> {
             return false;
         return true;
     }
+
 }

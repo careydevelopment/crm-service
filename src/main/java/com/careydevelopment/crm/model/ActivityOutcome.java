@@ -4,9 +4,12 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import us.careydevevlopment.model.activities.BaseActivityOutcome;
 
 @Document(collection = "#{@environment.getProperty('mongo.activity-outcome.collection')}")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ActivityOutcome extends BaseActivityOutcome {
 
     @Id

@@ -6,9 +6,12 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import us.careydevevlopment.model.activities.BaseActivityType;
 
 @Document(collection = "#{@environment.getProperty('mongo.activity-type.collection')}")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ActivityType extends BaseActivityType<ActivityOutcome> {
 
     @Id
