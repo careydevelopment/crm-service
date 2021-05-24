@@ -8,13 +8,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import us.careydevevlopment.model.activities.ActivityOwner;
 import us.careydevevlopment.model.activities.BaseActivity;
 
 
 @Document(collection = "#{@environment.getProperty('mongo.activity.collection')}")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Activity extends BaseActivity<ActivityOutcome, ActivityType> {
+public class Activity extends BaseActivity<ActivityOutcome, ActivityType, SalesOwner> {
 
     @Id
     private String id;
@@ -72,7 +71,7 @@ public class Activity extends BaseActivity<ActivityOutcome, ActivityType> {
     }
     
     @Override
-    public void setOwner(ActivityOwner owner) {
+    public void setOwner(SalesOwner owner) {
         // TODO do nothing for now
         //owner details are stored with the contact
     }
