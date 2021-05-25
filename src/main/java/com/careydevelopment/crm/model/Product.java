@@ -5,15 +5,13 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import us.careydevelopment.model.products.BaseProduct;
 
-public class Product {
+
+public class Product extends BaseProduct<String> {
 
     private String id;    
-    private String name;
-    private String description;
     private LineOfBusiness lineOfBusiness;
-    private ProductType productType;
-    private List<Price> prices = new ArrayList<>();
     
     public String getId() {
         return id;
@@ -23,37 +21,6 @@ public class Product {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
-    
-    public List<Price> getPrices() {
-        return prices;
-    }
-
-    public void setPrices(List<Price> prices) {
-        this.prices = prices;
-    }
     
     public LineOfBusiness getLineOfBusiness() {
         return lineOfBusiness;
@@ -63,10 +30,6 @@ public class Product {
         this.lineOfBusiness = lineOfBusiness;
     }
 
-    public void addPrice(Price price) {
-        prices.add(price);
-    }
-    
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
     }
@@ -89,9 +52,9 @@ public class Product {
             return false;
         Product other = (Product) obj;
         if (id == null) {
-            if (other.id != null)
+            if (other.getId() != null)
                 return false;
-        } else if (!id.equals(other.id))
+        } else if (!id.equals(other.getId()))
             return false;
         return true;
     }

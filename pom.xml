@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
   	<groupId>com.careydevelopment.crm</groupId>
   	<artifactId>crm-service</artifactId>
-  	<version>0.1.0-SNAPSHOT</version>
+  	<version>0.1.7-SNAPSHOT</version>
   
     <parent>
         <groupId>us.careydevelopment.ecosystem</groupId>
@@ -15,6 +15,11 @@
             <groupId>us.careydevelopment.model</groupId>
             <artifactId>activities</artifactId>
             <version>1.3.0-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>us.careydevelopment.model</groupId>
+            <artifactId>products</artifactId>
+            <version>1.0.0-RELEASE</version>
         </dependency>
     </dependencies>
      
