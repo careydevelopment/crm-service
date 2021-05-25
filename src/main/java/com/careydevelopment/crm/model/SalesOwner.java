@@ -1,12 +1,10 @@
 package com.careydevelopment.crm.model;
 
-import java.time.ZoneId;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-import us.careydevevlopment.model.activities.ActivityOwner;
+import us.careydevevlopment.model.activities.BaseActivityOwner;
 
-public class SalesOwner implements ActivityOwner {
+public class SalesOwner extends BaseActivityOwner {
 
     private String id;
     private String firstName;

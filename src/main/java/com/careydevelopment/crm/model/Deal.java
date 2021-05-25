@@ -7,6 +7,10 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import us.careydevelopment.model.products.Price;
+import us.careydevelopment.model.products.PriceType;
+import us.careydevelopment.model.products.ProductType;
+
 public class Deal extends DealLightweight {
 
     @NotNull(message = "Please associate this deal with a product")
