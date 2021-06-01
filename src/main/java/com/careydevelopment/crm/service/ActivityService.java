@@ -49,6 +49,15 @@ public class ActivityService {
             AggregationOperation owner = Aggregation.match(Criteria.where("contact.salesOwner._id").is(new ObjectId(searchCriteria.getSalesOwnerId())));
             ops.add(owner);
         }
+        
+        if (!StringUtils.isBlank(searchCriteria.getStatus())) {
+            Criteria usesStatusNull = Criteria.where("type.usesStatus").is(null);
+            Criteria usesStatusFalse = Criteria.where("type.usesStatus").is(false);
+            Criteria statusComplete = Criteria.where("status").is(searchCriteria.getStatus());
+            
+            AggregationOperation status = Aggregation.match(new Criteria().orOperator(usesStatusNull, usesStatusFalse, statusComplete));
+            ops.add(status);
+        }
 
         if (searchCriteria.getOrderBy() != null && searchCriteria.getOrderType() != null) {
             AggregationOperation sort = Aggregation.sort(searchCriteria.getOrderType(), searchCriteria.getOrderBy());

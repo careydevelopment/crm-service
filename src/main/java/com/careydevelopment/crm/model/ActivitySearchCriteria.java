@@ -11,7 +11,7 @@ public class ActivitySearchCriteria {
     private Direction orderType = Direction.DESC;
     private String dealId;
     private String salesOwnerId;
-    
+    private String status;
     
     public String getContactId() {
         return contactId;
@@ -50,6 +50,13 @@ public class ActivitySearchCriteria {
     }
     public void setSalesOwnerId(String salesOwnerId) {
         this.salesOwnerId = salesOwnerId;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
     }
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
