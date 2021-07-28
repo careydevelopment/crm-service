@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,12 +66,8 @@ public class ActivityController {
     @GetMapping("/search")
     public ResponseEntity<?> search(@RequestParam(required = false) String contactId, @RequestParam(required = false) Long minDate,
             @RequestParam(required = false) String orderBy, @RequestParam(required = false) String orderType, 
-            @RequestParam(required = false) String dealId, @RequestParam(required = false) String salesOwnerId, HttpServletRequest request) {
-        
-        String ipAddress = request.getRemoteAddr() + ":" + request.getRemotePort();
-        LOG.debug("Remote IP address is " + ipAddress);
-        
-        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+            @RequestParam(required = false) String dealId, @RequestParam(required = false) String salesOwnerId, 
+            @RequestParam(required = false) String status, @RequestHeader("Authorization") String bearerToken) {
         
         try {
             if (!StringUtils.isBlank(contactId)) {
@@ -98,6 +95,7 @@ public class ActivityController {
             searchCriteria.setOrderType("ASC".equals(orderType) ? Direction.ASC : Direction.DESC);
             searchCriteria.setDealId(dealId);
             searchCriteria.setSalesOwnerId(salesOwnerId);
+            searchCriteria.setStatus(status);
             
             LOG.debug("Search criteria is " + searchCriteria);
             
